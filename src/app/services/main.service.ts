@@ -13,9 +13,9 @@ import { map, Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class MainService {
-  bookingListRef: AngularFireList<any> | undefined;
-
   constructor(private firestore: AngularFirestore) {}
+
+  public cart: any = [];
 
   // Get collection one time
   public get_collection(collection: string): Observable<any> {
