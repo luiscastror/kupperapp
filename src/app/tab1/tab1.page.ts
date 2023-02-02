@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ToastController } from '@ionic/angular';
+import { ModalController, ToastController } from '@ionic/angular';
+import { ModalItemComponent } from '../components/modals/modal-item/modal-item.component';
 import { MainService } from '../services/main.service';
 
 @Component({
@@ -13,8 +14,9 @@ export class Tab1Page implements OnInit {
 
   constructor(
     public MainService: MainService,
-    private toastController: ToastController
-  ) { }
+    private toastController: ToastController,
+    private modalCtrl: ModalController
+  ) {}
 
   ngOnInit(): void {
     this.get();
@@ -23,7 +25,9 @@ export class Tab1Page implements OnInit {
   results: any;
   handleChange(event: any) {
     const query = event.target.value.toLowerCase();
-    this.results = this.items.filter(d => d.name.toLowerCase().indexOf(query) > -1);
+    this.results = this.items.filter(
+      (d) => d.name.toLowerCase().indexOf(query) > -1
+    );
   }
 
   get() {
@@ -39,7 +43,6 @@ export class Tab1Page implements OnInit {
   }
 
   addCart(item: any) {
-    this.presentToast('top');
     const pos = this.MainService.cart.findIndex((x: any) => x.uid == item.uid);
     if (pos == -1) {
       this.MainService.cart.push({
@@ -55,10 +58,21 @@ export class Tab1Page implements OnInit {
     const toast = await this.toastController.create({
       message: 'Item added correctly',
       duration: 1500,
-      position: position
+      position: position,
     });
 
     await toast.present();
   }
 
+  async openModal(item: any) {
+    const modal = await this.modalCtrl.create({
+      component: ModalItemComponent,
+      componentProps: {
+        item: item,
+      },
+    });
+    modal.present();
+
+    const { data, role } = await modal.onWillDismiss();
+  }
 }

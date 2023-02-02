@@ -13,16 +13,39 @@ import { map, Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class MainService {
-  constructor(private firestore: AngularFirestore) {}
-
   public cart: any = [];
 
-  // Get collection one time
+  constructor(private firestore: AngularFirestore) {
+    const carLocal = localStorage.getItem('cartKupper') || '[]';
+    this.cart = JSON.parse(carLocal);
+    console.log(this.cart);
+  }
+
+  public addCart(item: any) {
+    const pos = this.cart.findIndex((x: any) => x.uid == item.uid);
+    if (pos == -1) {
+      this.cart.push(item);
+    } else {
+      this.cart[pos] = item;
+    }
+    this.saveCart();
+  }
+
+  public removeCart(item: any) {
+    const pos = this.cart.findIndex((x: any) => x.uid == item.uid);
+    this.cart.splice(pos, 1);
+    this.saveCart();
+  }
+
+  saveCart() {
+    console.log(this.cart);
+    localStorage.setItem('cartKupper', JSON.stringify(this.cart));
+  }
+
   public get_collection(collection: string): Observable<any> {
     return this.firestore.collection(collection).get() as Observable<any>;
   }
 
-  // Get collection real time
   public get_collection_realtime(collection: string): Observable<any> {
     return this.firestore
       .collection(collection)

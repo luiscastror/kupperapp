@@ -1,38 +1,20 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-buttons slot="primary">
-      <ion-button>
-        <ion-badge color="danger">{{MainService.cart.length}}</ion-badge>
-        <ion-icon slot="icon-only" ios="cart-outline" md="cart-outline"></ion-icon>
-      </ion-button>
+    <ion-buttons slot="end" style="padding-right: 10px;">
+      <ion-icon slot="start" name="person-outline"></ion-icon>
     </ion-buttons>
     <ion-title>Welcome</ion-title>
   </ion-toolbar>
 </ion-header>
 <ion-content [fullscreen]="true" class="ion-padding">
-
-  <ion-button slot="fixed" fill="outline" shape="round">
-    <ion-icon slot="icon-only" ios="cart-outline" md="cart-outline"></ion-icon>
-  </ion-button>
-
   <ion-searchbar show-clear-button="always" [debounce]="500" animated="true" placeholder="Search" (ionChange)="handleChange($event)"></ion-searchbar>
-
-  <ion-card *ngFor="let item of results">
-    <img [src]="item.image[0]?.url ? item.image[0].url : 'https://kupper-995ca.web.app/assets/images/loading.webp' " />
-    <ion-card-header>
-      <ion-card-title>{{item.name}}</ion-card-title>
-      <ion-card-subtitle>Card Subtitle</ion-card-subtitle>
-    </ion-card-header>
-
-    <ion-card-content>
+  <ion-item *ngFor="let item of results" (click)="openModal(item)">
+    <ion-thumbnail slot="start">
+      <img [src]="item.image[0]?.url ? item.image[0].url : 'https://kupper-995ca.web.app/assets/images/loading.webp' " />
+    </ion-thumbnail>
+    <ion-label class="ion-text-wrap">
+      <h3>{{item.name}}</h3>
       <p>{{item.category}}</p>
-      <p>{{item.unit}}</p>
-    </ion-card-content>
-
-    <ion-button fill="clear" (click)="addCart(item)">Action 1</ion-button>
-    <ion-button fill="clear" (click)="addCart(item)">Action 2</ion-button>
-  </ion-card>
-
-
-
+    </ion-label>
+  </ion-item>
 </ion-content>
