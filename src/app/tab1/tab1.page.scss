@@ -15,3 +15,9 @@ ion-button[slot="fixed"] {
   right: 3px;
   top: -3px;
 }
+
+.horizontal-scroll {
+  overflow: auto;
+  white-space: nowrap;
+  margin-bottom: 15px;
+}

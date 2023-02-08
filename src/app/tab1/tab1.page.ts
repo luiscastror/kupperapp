@@ -11,6 +11,7 @@ import { MainService } from '../services/main.service';
 export class Tab1Page implements OnInit {
   items: any[] = [];
   collection: string = 'items';
+  tabs: any = [];
 
   constructor(
     public MainService: MainService,
@@ -36,9 +37,26 @@ export class Tab1Page implements OnInit {
       resp.forEach((doc: any) => {
         this.items.push({ ...doc.data(), uid: doc.id });
       });
-      console.log(this.items);
-
       this.results = [...this.items];
+      this.runTabs();
+    });
+  }
+
+  runTabs() {
+    this.results.map((item: any) => {
+      if (item.category && item.category.length > 0) {
+        item.category.map((cat: any) => {
+          const pos = this.tabs.findIndex((t: any) => t.category === cat);
+          if (pos != -1) {
+            this.tabs[pos].count += 1;
+          } else {
+            this.tabs.push({
+              category: cat,
+              count: 1,
+            });
+          }
+        });
+      }
     });
   }
 
@@ -60,7 +78,6 @@ export class Tab1Page implements OnInit {
       duration: 1500,
       position: position,
     });
-
     await toast.present();
   }
 
@@ -72,7 +89,6 @@ export class Tab1Page implements OnInit {
       },
     });
     modal.present();
-
     const { data, role } = await modal.onWillDismiss();
   }
 }

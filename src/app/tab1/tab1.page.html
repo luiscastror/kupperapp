@@ -5,16 +5,32 @@
     </ion-buttons>
     <ion-title>Welcome</ion-title>
   </ion-toolbar>
+  <ion-toolbar>
+    <ion-segment [scrollable]="true">
+      <ion-segment-button *ngFor="let tab of tabs">
+        <ion-label>{{tab.category}} ({{tab.count}})</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
 </ion-header>
-<ion-content [fullscreen]="true" class="ion-padding">
+<ion-toolbar>
   <ion-searchbar show-clear-button="always" [debounce]="500" animated="true" placeholder="Search" (ionChange)="handleChange($event)"></ion-searchbar>
+</ion-toolbar>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+
+  <div class="horizontal-scroll">
+    <ion-chip *ngFor="let tab of tabs">{{tab.category}} ({{tab.count}})</ion-chip>
+  </div>
+
   <ion-item *ngFor="let item of results" (click)="openModal(item)">
     <ion-thumbnail slot="start">
-      <img [src]="item.image[0]?.url ? item.image[0].url : 'https://kupper-995ca.web.app/assets/images/loading.webp' " />
+      <img [src]="item.image[0]?.url ? item.image[0].url : 'assets/img/loading.webp' " />
     </ion-thumbnail>
     <ion-label class="ion-text-wrap">
       <h3>{{item.name}}</h3>
       <p>{{item.category}}</p>
     </ion-label>
   </ion-item>
+
 </ion-content>
